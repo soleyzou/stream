@@ -31,7 +31,7 @@
         <org.eclipse.paho.client.mqttv3.version>1.2.0</org.eclipse.paho.client.mqttv3.version>
         <kafka.version>3.2.0</kafka.version>
         <amqp-client.version>5.16.0</amqp-client.version>
-        <redisson.version>3.16.6</redisson.version>
+        <redisson.version>3.38.1</redisson.version>
         <pulsar-client.version>2.11.0</pulsar-client.version>
     </properties>
 
@@ -158,20 +158,6 @@
                         </configuration>
                     </plugin>
                     <!--gpg插件-->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>${maven-gpg-plugin.version}</version>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
                 </plugins>
             </build>
         </profile>

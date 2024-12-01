@@ -26,7 +26,8 @@ public enum SinkType implements ComponentWithClassName {
 
     DEFAULT("io.github.stream.core.sink.DefaultSink"), MQTT("io.github.stream.mqtt.sink.MqttSink"),
     KAFKA("io.github.stream.kafka.sink.KafkaSink"), RABBITMQ("io.github.stream.rabbitmq.sink.RabbitMQSink"),
-    REDIS("io.github.stream.redis.sink.RedisStreamSink"), PULSAR("io.github.stream.pulsar.sink.PulsarSink");
+    REDIS("io.github.stream.redis.sink.RedisStreamSink"), PULSAR("io.github.stream.pulsar.sink.PulsarSink"),
+    REDISSTREAMQUEUE("io.github.stream.redis.stream.sink.RedisStreamQueueSink");
 
     private final String className;
 

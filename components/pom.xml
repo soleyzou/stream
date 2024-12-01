@@ -18,6 +18,7 @@
         <module>rabbitmq</module>
         <module>redis</module>
         <module>pulsar</module>
+        <module>stream-redisStream-springboot3</module>
     </modules>
 
     <artifactId>stream-components-springboot3</artifactId>

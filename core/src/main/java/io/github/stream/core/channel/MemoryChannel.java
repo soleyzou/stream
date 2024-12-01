@@ -26,7 +26,7 @@ import io.github.stream.core.Message;
  */
 public class MemoryChannel<T> extends AbstractChannel<T> {
 
-    private final Queue<Message<T>> messageQueue;
+    private final LinkedBlockingQueue<Message<T>> messageQueue;
 
     public MemoryChannel(int capacity) {
         super(capacity);
@@ -34,8 +34,12 @@ public class MemoryChannel<T> extends AbstractChannel<T> {
     }
 
     @Override
-    protected void doPut(Message<T> message) {
-        messageQueue.add(message);
+    protected void doPut(Message<T> message)  {
+        try {
+            messageQueue.offer(message,10, java.util.concurrent.TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) {
+           throw  new   IllegalStateException("本地队列已满,消息添加失败");
+        }
     }
 
     @Override

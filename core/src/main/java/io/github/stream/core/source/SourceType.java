@@ -25,7 +25,8 @@ import io.github.stream.core.configuration.ComponentWithClassName;
 public enum SourceType implements ComponentWithClassName {
     LOCAL("io.github.stream.core.source.LocalSource"), MQTT("io.github.stream.mqtt.source.MqttSource"),
     KAFKA("io.github.stream.kafka.source.KafkaSource"), RABBITMQ("io.github.stream.rabbitmq.source.RabbitMQSource"),
-    REDIS("io.github.stream.redis.source.RedisStreamSource"), PULSAR("io.github.stream.pulsar.source.PulsarSource");
+    REDIS("io.github.stream.redis.source.RedisStreamSource"), PULSAR("io.github.stream.pulsar.source.PulsarSource"),
+    REDISSTREAMQUEUE("io.github.stream.redis.stream.source.RedisStreamQueueSource");
 
     private final String className;
 
