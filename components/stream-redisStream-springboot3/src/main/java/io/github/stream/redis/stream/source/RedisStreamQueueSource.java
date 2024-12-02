@@ -70,11 +70,8 @@ public class RedisStreamQueueSource extends AbstractSource {
 
     @Override
     public void stop() {
-        for (RStream<Object, Object> stream : rTopics) {
-
-        }
         stateConfigure.getClient().shutdown();
-        super.stop();
+        this.runner.shutdown();
     }
 
 
