@@ -13,7 +13,6 @@ import org.redisson.api.RStream;
 import org.redisson.api.StreamMessageId;
 import org.redisson.api.stream.StreamReadGroupArgs;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -44,6 +43,12 @@ public class RedisStreamQueueSource extends AbstractSource {
      * 拉取间隔
      */
     private Integer interval;
+    /**
+     * 执行线程
+     */
+    private Thread runnerThread;
+
+    private RedisPollingRunner runner;
 
     @Override
     public void configure(ConfigContext context) {
@@ -56,22 +61,11 @@ public class RedisStreamQueueSource extends AbstractSource {
 
     @Override
     public void start() {
-        this.rTopics = new ArrayList<>(this.topics.length);
-        for (String topic : topics) {
-            RStream<Object, Object> stream = stateConfigure.getClient().getStream(topic);
-            rTopics.add(stream);
-            String groupName = sourceConfig.getString("groupName");
-            String consumeName = sourceConfig.getString("consumeName");
-            stream.createConsumer(groupName,consumeName);
-            Map<StreamMessageId, Map<Object, Object>> streamMessageIdMapMap = stream.readGroup(groupName, consumeName
-                    , StreamReadGroupArgs.neverDelivered());
-            for (Map.Entry<StreamMessageId, Map<Object, Object>> entry : streamMessageIdMapMap.entrySet()) {
-                Map<Object, Object> value = entry.getValue();
-                Message message = MessageBuilder.withPayload(value).setHeader(Constants.TOPIC_KEY, topic).build();
-                getChannelProcessor().send(message);
-
-            }
-        }
+        this.runner = new RedisPollingRunner();
+        this.runnerThread = new Thread(runner, "kafka-source-runner");
+        this.runner.startup();
+        this.runnerThread.start();
+        super.start();
     }
 
     @Override
@@ -102,8 +96,12 @@ public class RedisStreamQueueSource extends AbstractSource {
                         StreamMessageId streamMessageId = entry.getKey();
                         Map<Object, Object> value = entry.getValue();
                         Message message = MessageBuilder.withPayload(value).setHeader(Constants.TOPIC_KEY, topic).build();
-                        getChannelProcessor().send(message);
-                        stream.ackAsync(groupName, streamMessageId);
+                        try {
+                            getChannelProcessor().send(message);
+                            stream.ackAsync(groupName, streamMessageId);
+                        } catch (Exception e) {
+                            log.error("redis stream ack error ,message:{}", message.getPayload(), e);
+                        }
                     }
                 }
 
