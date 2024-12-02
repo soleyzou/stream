@@ -13,6 +13,7 @@ import org.redisson.api.RStream;
 import org.redisson.api.StreamMessageId;
 import org.redisson.api.stream.StreamReadGroupArgs;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,14 +30,12 @@ public class RedisStreamQueueSource extends AbstractSource {
     private RedissonStateConfigure stateConfigure;
 
     private String[] topics;
-
-    private List<RStream<Object, Object>> rTopics;
     /**
-     * 监听器ID
+     * redis stream 列表
      */
-    private Map<String, Integer> topicListenerMap;
+    private List<RStream<Object, Object>> streamList = new ArrayList<>();
     /**
-     *
+     * source 配置
      */
     private BaseProperties sourceConfig;
     /**
@@ -83,7 +82,7 @@ public class RedisStreamQueueSource extends AbstractSource {
             while (isRunning()) {
                 for (String topic : topics) {
                     RStream<Object, Object> stream = stateConfigure.getClient().getStream(topic);
-                    rTopics.add(stream);
+                    streamList.add(stream);
                     String groupName = sourceConfig.getString("groupName");
                     String consumeName = sourceConfig.getString("consumeName");
 
