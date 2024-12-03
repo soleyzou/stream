@@ -57,7 +57,7 @@ public class RedisStreamQueueSink extends AbstractSink<Object> {
             // 队列大小
             int maxSizeThreshold = sinkProperties.getInt("maxSizeThreshold", 100000);
 
-            stream.add(StreamMessageId.AUTO_GENERATED, StreamAddArgs.entries("header",message.getHeaders(),"body",payload));
+            stream.add(StreamMessageId.AUTO_GENERATED, StreamAddArgs.entries("header", message.getHeaders().getString("messageId"),"body",payload));
             stream.trimNonStrict(StreamTrimArgs.maxLen(maxSizeThreshold).limit(500000));
         }
     }
