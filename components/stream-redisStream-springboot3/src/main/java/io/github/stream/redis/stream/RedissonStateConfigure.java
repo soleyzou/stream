@@ -63,7 +63,7 @@ public final class RedissonStateConfigure implements Configurable {
         }
 
         BaseProperties properties = context.getInstance();
-        String mode = properties.getString("mode", Constants.MODE_SINGLE);
+        String mode = properties.getString("mode", RedisStreamConstants.MODE_SINGLE);
         String address = properties.getString("address");
         Assert.hasText(address, "address cannot be empty");
         String username = properties.getString("username");
@@ -74,19 +74,19 @@ public final class RedissonStateConfigure implements Configurable {
         BaseConfig baseConfig = null;
         List<String> addresses = Arrays.asList(address.split(","));
         switch (mode) {
-            case Constants.MODE_SINGLE:
+            case RedisStreamConstants.MODE_SINGLE:
                 baseConfig = config.useSingleServer().setAddress(address).setDatabase(database);
                 break;
-            case Constants.MODE_CLUSTER:
+            case RedisStreamConstants.MODE_CLUSTER:
                 config.useClusterServers().setNodeAddresses(addresses);
                 break;
-            case Constants.MODE_MASTER_SLAVE:
+            case RedisStreamConstants.MODE_MASTER_SLAVE:
                 config.useMasterSlaveServers()
                         .setDatabase(database)
                         .setMasterAddress(addresses.remove(0))
                         .setSlaveAddresses(new HashSet<>(addresses));
                 break;
-            case Constants.MODE_REPLICATED:
+            case RedisStreamConstants.MODE_REPLICATED:
                 config.useReplicatedServers().setDatabase(database).setNodeAddresses(addresses);
                 break;
         }
@@ -105,7 +105,7 @@ public final class RedissonStateConfigure implements Configurable {
     }
 
     public String[] resolveTopic(BaseProperties properties) {
-        Object topicValue = properties.get(Constants.TOPIC_KEY);
+        Object topicValue = properties.get(RedisStreamConstants.TOPIC_KEY);
         if (topicValue instanceof List) {
             List<String> topicList = (List<String>) topicValue;
             Assert.notEmpty(topicList, "redis topic cannot be empty");

@@ -7,7 +7,7 @@ package io.github.stream.redis.stream;
  * @date 2023-10-17 16:29:55
  * @since 1.0.0
  */
-public interface Constants {
+public interface RedisStreamConstants {
     // 连接模式：单机
     String MODE_SINGLE = "single";
     // 连接模式：集群
@@ -20,4 +20,8 @@ public interface Constants {
     String TOPIC_KEY = "topic";
     // 消息ID key 在 Message haaders 中
     String MESSAGE_ID_KEY = "messageId";
+    /**
+     * 队列最大值key
+     */
+    String MAX_SIZE_THRESHOLD_KEY ="maxSizeThreshold";
 }

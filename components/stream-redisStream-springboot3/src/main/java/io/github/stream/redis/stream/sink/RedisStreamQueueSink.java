@@ -4,7 +4,7 @@ import io.github.stream.core.Message;
 import io.github.stream.core.configuration.ConfigContext;
 import io.github.stream.core.properties.BaseProperties;
 import io.github.stream.core.sink.AbstractSink;
-import io.github.stream.redis.stream.Constants;
+import io.github.stream.redis.stream.RedisStreamConstants;
 import io.github.stream.redis.stream.RedissonStateConfigure;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -16,6 +16,8 @@ import org.redisson.api.stream.StreamTrimArgs;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static io.github.stream.redis.stream.RedisStreamConstants.MAX_SIZE_THRESHOLD_KEY;
 
 /**
  * redis stream 队列推送
@@ -42,7 +44,7 @@ public class RedisStreamQueueSink extends AbstractSink<Object> {
     @Override
     public void process(List<Message<Object>> messages) {
         for (Message message : messages) {
-            String topic = message.getHeaders().getString(Constants.TOPIC_KEY);
+            String topic = message.getHeaders().getString(RedisStreamConstants.TOPIC_KEY);
             Object payload = message.getPayload();
             if (StringUtils.isBlank(topic)) {
                 continue;
@@ -55,7 +57,7 @@ public class RedisStreamQueueSink extends AbstractSink<Object> {
                 stream = streamTopics.get(topic);
             }
             // 队列大小
-            int maxSizeThreshold = sinkProperties.getInt("maxSizeThreshold", 100000);
+            int maxSizeThreshold = sinkProperties.getInt(MAX_SIZE_THRESHOLD_KEY, 100000);
 
             stream.add(StreamMessageId.AUTO_GENERATED, StreamAddArgs.entries("header", message.getHeaders().getString("messageId"),"body",payload));
             stream.trimNonStrict(StreamTrimArgs.maxLen(maxSizeThreshold).limit(500000));

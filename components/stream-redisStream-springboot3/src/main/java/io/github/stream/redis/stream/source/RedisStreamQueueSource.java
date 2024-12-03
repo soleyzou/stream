@@ -6,12 +6,13 @@ import io.github.stream.core.configuration.ConfigContext;
 import io.github.stream.core.message.MessageBuilder;
 import io.github.stream.core.properties.BaseProperties;
 import io.github.stream.core.source.AbstractSource;
-import io.github.stream.redis.stream.Constants;
+import io.github.stream.redis.stream.RedisStreamConstants;
 import io.github.stream.redis.stream.RedissonStateConfigure;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RStream;
 import org.redisson.api.StreamGroup;
 import org.redisson.api.StreamMessageId;
+import org.redisson.api.stream.StreamAddArgs;
 import org.redisson.api.stream.StreamCreateGroupArgs;
 import org.redisson.api.stream.StreamReadGroupArgs;
 
@@ -61,6 +62,7 @@ public class RedisStreamQueueSource extends AbstractSource {
         for (String topic : topics) {
             RStream<Object, Object> stream = stateConfigure.getClient().getStream(topic);
             streamList.add(stream);
+            stream.add(StreamAddArgs.entries("key1", "value", "key", "value"));
             String groupName = sourceConfig.getString("groupName");
             String consumeName = sourceConfig.getString("consumeName");
             List<StreamGroup> streamGroups = stream.listGroups();
@@ -112,7 +114,7 @@ public class RedisStreamQueueSource extends AbstractSource {
                     for (Map.Entry<StreamMessageId, Map<Object, Object>> entry : streamMessageIdMapMap.entrySet()) {
                         StreamMessageId streamMessageId = entry.getKey();
                         Map<Object, Object> value = entry.getValue();
-                        Message message = MessageBuilder.withPayload(value).setHeader(Constants.TOPIC_KEY, topic).build();
+                        Message message = MessageBuilder.withPayload(value).setHeader(RedisStreamConstants.TOPIC_KEY, topic).build();
                         try {
                             getChannelProcessor().send(message);
                             stream.ackAsync(groupName, streamMessageId);
