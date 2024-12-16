@@ -34,7 +34,20 @@
         <redisson.version>3.38.1</redisson.version>
         <pulsar-client.version>2.11.0</pulsar-client.version>
     </properties>
+    <distributionManagement>
+        <repository>
+            <id>maven-releases</id>
+            <name>旦米release</name>
+            <url>http://192.168.11.127:8081/repository/maven-releases/</url>
+            <uniqueVersion>true</uniqueVersion>
+        </repository>
 
+        <snapshotRepository>
+            <id>maven-snapshots</id>
+            <name>旦米snapshots</name>
+            <url>http://192.168.11.127:8081/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
     <dependencyManagement>
         <dependencies>
             <!-- stream -->
@@ -136,16 +149,6 @@
             </activation>
             <build>
                 <plugins>
-                    <!--发布到中央仓库插件-->
-                    <plugin>
-                        <groupId>org.sonatype.central</groupId>
-                        <artifactId>central-publishing-maven-plugin</artifactId>
-                        <version>${central-publishing-maven-plugin.version}</version>
-                        <extensions>true</extensions>
-                        <configuration>
-                            <publishingServerId>ossrh</publishingServerId>
-                        </configuration>
-                    </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-release-plugin</artifactId>
@@ -153,7 +156,6 @@
                         <configuration>
                             <autoVersionSubmodules>true</autoVersionSubmodules>
                             <useReleaseProfile>false</useReleaseProfile>
-                            <releaseProfiles>release</releaseProfiles>
                             <goals>deploy</goals>
                         </configuration>
                     </plugin>

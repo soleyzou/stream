@@ -10,7 +10,20 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
     <artifactId>stream-redisStream-springboot3</artifactId>
+    <distributionManagement>
+        <repository>
+            <id>maven-releases</id>
+            <name>旦米release</name>
+            <url>http://192.168.11.127:8081/repository/maven-releases/</url>
+            <uniqueVersion>true</uniqueVersion>
+        </repository>
 
+        <snapshotRepository>
+            <id>maven-snapshots</id>
+            <name>旦米snapshots</name>
+            <url>http://192.168.11.127:8081/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
