@@ -26,7 +26,7 @@
         <!-- logback -->
         <logback.version>1.2.11</logback.version>
         <!-- spring-boot -->
-        <spring-boot.version>2.1.6.RELEASE</spring-boot.version>
+        <spring-boot.version>2.2.11.RELEASE</spring-boot.version>
         <junit.version>4.13.1</junit.version>
         <org.eclipse.paho.client.mqttv3.version>1.2.0</org.eclipse.paho.client.mqttv3.version>
         <kafka.version>3.2.0</kafka.version>
