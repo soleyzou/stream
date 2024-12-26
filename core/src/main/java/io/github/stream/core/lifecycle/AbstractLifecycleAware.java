@@ -23,7 +23,7 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public abstract class AbstractLifecycleAware implements LifecycleAware {
 
-    private final AtomicReference<LifecycleState> state = new AtomicReference<>(LifecycleState.IDLE);
+    private final AtomicReference<LifecycleState> state = new AtomicReference<LifecycleState>(LifecycleState.IDLE);
 
     protected AbstractLifecycleAware() {}
 

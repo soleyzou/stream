@@ -18,6 +18,7 @@
         <module>rabbitmq</module>
         <module>redis</module>
         <module>pulsar</module>
+        <module>redisStream</module>
     </modules>
 
     <artifactId>stream-components</artifactId>

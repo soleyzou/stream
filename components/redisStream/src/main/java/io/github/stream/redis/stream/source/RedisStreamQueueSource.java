@@ -6,7 +6,7 @@ import io.github.stream.core.configuration.ConfigContext;
 import io.github.stream.core.message.MessageBuilder;
 import io.github.stream.core.properties.BaseProperties;
 import io.github.stream.core.source.AbstractSource;
-import io.github.stream.redis.stream.Constants;
+import io.github.stream.redis.stream.RedisStreamConstants;
 import io.github.stream.redis.stream.RedissonStateConfigure;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RStream;
@@ -91,7 +91,7 @@ public class RedisStreamQueueSource extends AbstractSource {
                     for (Map.Entry<StreamMessageId, Map<Object, Object>> entry : streamMessageIdMapMap.entrySet()) {
                         StreamMessageId streamMessageId = entry.getKey();
                         Map<Object, Object> value = entry.getValue();
-                        Message message = MessageBuilder.withPayload(value).setHeader(Constants.TOPIC_KEY, topic).build();
+                        Message message = MessageBuilder.withPayload(value).setHeader(RedisStreamConstants.TOPIC_KEY, topic).build();
                         try {
                             getChannelProcessor().send(message);
                             stream.ackAsync(groupName, streamMessageId);

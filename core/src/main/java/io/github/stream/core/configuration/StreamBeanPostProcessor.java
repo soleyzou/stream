@@ -14,10 +14,12 @@
 package io.github.stream.core.configuration;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.stream.Streams;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -82,15 +84,13 @@ public class StreamBeanPostProcessor implements BeanPostProcessor {
             if (null == sinks) {
                 throw new StreamException(clazz.getName() + " Consumer not found " + name + " sink");
             }
-
             sinks.forEach(sink -> sink.addConsumer((Consumer) bean));
         }
     }
 
     private void autoWriteChannelProcessor(Object bean, MaterializedConfiguration configuration) {
         Field[] fields = bean.getClass().getDeclaredFields();
-
-        Stream.of(fields).filter(f -> null != f.getAnnotation(Channel.class)).forEach(field -> {
+        Arrays.stream(fields).filter(f -> null != f.getAnnotation(Channel.class)).forEach(field -> {
             ReflectionUtils.makeAccessible(field);
             Channel annotation = field.getAnnotation(Channel.class);
             String value = annotation.value();

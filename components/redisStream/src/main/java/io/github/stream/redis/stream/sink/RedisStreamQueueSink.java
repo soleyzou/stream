@@ -4,7 +4,7 @@ import io.github.stream.core.Message;
 import io.github.stream.core.configuration.ConfigContext;
 import io.github.stream.core.properties.BaseProperties;
 import io.github.stream.core.sink.AbstractSink;
-import io.github.stream.redis.stream.Constants;
+import io.github.stream.redis.stream.RedisStreamConstants;
 import io.github.stream.redis.stream.RedissonStateConfigure;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -42,7 +42,7 @@ public class RedisStreamQueueSink extends AbstractSink<Object> {
     @Override
     public void process(List<Message<Object>> messages) {
         for (Message message : messages) {
-            String topic = message.getHeaders().getString(Constants.TOPIC_KEY);
+            String topic = message.getHeaders().getString(RedisStreamConstants.TOPIC_KEY);
             Object payload = message.getPayload();
             if (StringUtils.isBlank(topic)) {
                 continue;

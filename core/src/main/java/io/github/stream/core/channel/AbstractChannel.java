@@ -33,7 +33,7 @@ import io.github.stream.core.lifecycle.LifecycleState;
  */
 public abstract class AbstractChannel<T> extends AbstractLifecycleAware implements Channel<T>, InterceptableChannel<T> {
 
-    private final List<Interceptor<T>> interceptors = new CopyOnWriteArrayList<>();
+    private final List<Interceptor<T>> interceptors = new CopyOnWriteArrayList();
 
     protected final int capacity;
 
