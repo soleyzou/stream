@@ -39,6 +39,11 @@ public class MemoryChannel<T> extends AbstractChannel<T> {
     }
 
     @Override
+    public void offer(Message<T> message) {
+        messageQueue.add(message);
+    }
+
+    @Override
     public Message<T> poll() {
         return messageQueue.poll();
     }
@@ -47,4 +52,5 @@ public class MemoryChannel<T> extends AbstractChannel<T> {
     public boolean isEmpty() {
         return messageQueue.isEmpty();
     }
+
 }
