@@ -3,7 +3,9 @@ package io.github.stream.redis.stream.source;
 import io.github.stream.core.AbstractAutoRunnable;
 import io.github.stream.core.Message;
 import io.github.stream.core.configuration.ConfigContext;
+import io.github.stream.core.message.GenericMessage;
 import io.github.stream.core.message.MessageBuilder;
+import io.github.stream.core.message.MessageHeaders;
 import io.github.stream.core.properties.BaseProperties;
 import io.github.stream.core.source.AbstractSource;
 import io.github.stream.redis.stream.RedisStreamConstants;
@@ -114,7 +116,9 @@ public class RedisStreamQueueSource extends AbstractSource {
                     for (Map.Entry<StreamMessageId, Map<Object, Object>> entry : streamMessageIdMapMap.entrySet()) {
                         StreamMessageId streamMessageId = entry.getKey();
                         Map<Object, Object> value = entry.getValue();
-                        Message message = MessageBuilder.withPayload(value).setHeader(RedisStreamConstants.TOPIC_KEY, topic).build();
+                        MessageHeaders header = (MessageHeaders) value.get("header");
+                        Object body = value.get("body");
+                        Message message = new GenericMessage(body, header);
                         try {
                             getChannelProcessor().send(message);
                             stream.ackAsync(groupName, streamMessageId);
