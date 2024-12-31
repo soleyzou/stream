@@ -6,7 +6,7 @@
 
     <groupId>io.github.wendy512</groupId>
     <artifactId>stream-springboot3</artifactId>
-    <version>${revision}</version>
+    <version>1.0.4</version>
     <modules>
         <module>bom</module>
         <module>core</module>

@@ -5,11 +5,14 @@
     <parent>
         <artifactId>stream-components-springboot3</artifactId>
         <groupId>io.github.wendy512</groupId>
-        <version>${revision}</version>
+        <version>1.0.4</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
     <artifactId>redisStream-springboot3</artifactId>
+    <properties>
+        <revision>1.0.4</revision>
+    </properties>
     <distributionManagement>
         <repository>
             <id>maven-releases</id>
@@ -24,10 +27,6 @@
             <url>http://192.168.11.127:8081/repository/maven-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
-    <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
-    </properties>
     <dependencies>
         <dependency>
             <groupId>io.github.wendy512</groupId>

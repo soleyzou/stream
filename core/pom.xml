@@ -5,13 +5,15 @@
     <parent>
         <artifactId>stream-springboot3</artifactId>
         <groupId>io.github.wendy512</groupId>
-        <version>${revision}</version>
+        <version>1.0.4</version>
     </parent>
     <packaging>jar</packaging>
     <modelVersion>4.0.0</modelVersion>
 
     <name>Stream Core</name>
     <artifactId>stream-core-springboot3</artifactId>
+
+
     <distributionManagement>
         <repository>
             <id>maven-releases</id>
