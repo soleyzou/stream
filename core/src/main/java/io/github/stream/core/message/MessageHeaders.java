@@ -33,7 +33,7 @@ public class MessageHeaders implements Map<String, Object>, Serializable {
 
     private static final long serialVersionUID = 7035068984263400920L;
 
-    private final Map<String, Object> headers;
+    private Map<String, Object> headers;
 
     public MessageHeaders(Map<String, Object> headers) {
         this(headers, null);
@@ -135,7 +135,9 @@ public class MessageHeaders implements Map<String, Object>, Serializable {
 
 
     public Object put(String key, Object value) {
-        throw new UnsupportedOperationException("MessageHeaders is immutable");
+        this.headers = (headers != null ? new HashMap<>(headers) : new HashMap<>());
+        this.headers.put(key, value);
+        return  this;
     }
 
     public void putAll(Map<? extends String, ? extends Object> map) {
