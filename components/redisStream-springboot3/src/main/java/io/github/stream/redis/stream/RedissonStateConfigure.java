@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.BaseConfig;
+import org.redisson.config.ClusterServersConfig;
 import org.redisson.config.Config;
 import org.springframework.util.Assert;
 
@@ -19,6 +20,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * 连接配置
+ *
  * @author taowenwu
  * @date 2023-10-17 16:21:11
  * @since 1.0.0
@@ -31,10 +33,12 @@ public final class RedissonStateConfigure implements Configurable {
 
     private RedissonClient client;
 
-    private RedissonStateConfigure() {}
+    private RedissonStateConfigure() {
+    }
 
     /**
      * 获取客户端实例，保证同一实例名只创建一个客户端，节省资源
+     *
      * @param name 实例名称
      * @return 创建后的客户端实例
      */
@@ -76,9 +80,23 @@ public final class RedissonStateConfigure implements Configurable {
         switch (mode) {
             case RedisStreamConstants.MODE_SINGLE:
                 baseConfig = config.useSingleServer().setAddress(address).setDatabase(database);
+                if (StringUtils.isNotBlank(username)) {
+                    baseConfig.setUsername(username);
+                }
+                if (StringUtils.isNotBlank(password)) {
+                    baseConfig.setPassword(password);
+                }
                 break;
             case RedisStreamConstants.MODE_CLUSTER:
+                ClusterServersConfig clusterServersConfig = config.useClusterServers();
                 config.useClusterServers().setNodeAddresses(addresses);
+                if (StringUtils.isNotBlank(username)) {
+                    clusterServersConfig.setUsername(username);
+                }
+                if (StringUtils.isNotBlank(password)) {
+                    clusterServersConfig.setPassword(password);
+                }
+
                 break;
             case RedisStreamConstants.MODE_MASTER_SLAVE:
                 config.useMasterSlaveServers()
@@ -91,12 +109,7 @@ public final class RedissonStateConfigure implements Configurable {
                 break;
         }
 
-        if (StringUtils.isNotBlank(username)) {
-            baseConfig.setUsername(username);
-        }
-        if (StringUtils.isNotBlank(password)) {
-            baseConfig.setPassword(password);
-        }
+
         this.client = Redisson.create(config);
     }
 
