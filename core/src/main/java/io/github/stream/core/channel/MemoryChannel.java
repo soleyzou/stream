@@ -40,7 +40,7 @@ public class MemoryChannel<T> extends AbstractChannel<T> {
 
     @Override
     public void offer(Message<T> message) {
-        messageQueue.add(message);
+        messageQueue.offer(message);
     }
 
     @Override
