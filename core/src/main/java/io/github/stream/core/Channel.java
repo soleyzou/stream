@@ -31,6 +31,12 @@ public interface Channel<T> extends LifecycleAware, Configurable {
     void put(Message<T> message);
 
     /**
+     * 非阻塞消息
+     * @param message
+     */
+    void offer(Message<T> message);
+
+    /**
      * 获取消息，没有消息返回null
      * @return
      */

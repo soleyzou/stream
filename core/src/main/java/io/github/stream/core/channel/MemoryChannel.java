@@ -34,12 +34,13 @@ public class MemoryChannel<T> extends AbstractChannel<T> {
     }
 
     @Override
-    protected void doPut(Message<T> message)  {
-        try {
-            messageQueue.offer(message,10, java.util.concurrent.TimeUnit.MILLISECONDS);
-        } catch (InterruptedException e) {
-           throw  new   IllegalStateException("本地队列已满,消息添加失败");
-        }
+    protected void doPut(Message<T> message) {
+        messageQueue.add(message);
+    }
+
+    @Override
+    public void offer(Message<T> message) {
+        messageQueue.add(message);
     }
 
     @Override
